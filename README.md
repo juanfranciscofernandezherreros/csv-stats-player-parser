@@ -1,4 +1,4 @@
-Current version: **1.0.1**
+Current version: **2.0.0**
 
 # csv-stats-player-parser
 
