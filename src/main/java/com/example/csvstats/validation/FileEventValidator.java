@@ -26,16 +26,20 @@ public class FileEventValidator {
         Path path = Path.of(value.getFilePath());
         if (!path.isAbsolute() || !path.normalize().equals(path)) throw new IllegalArgumentException("filePath no valido: " + value.getFilePath());
         Path normalized = path.toAbsolutePath().normalize();
-        if (!normalized.startsWith(allowedRoot)) throw new IllegalArgumentException("filePath fuera del directorio permitido: " + value.getFilePath());
-        if (normalized.getFileName() == null || !CsvConstants.EXPECTED_FILENAME.equalsIgnoreCase(normalized.getFileName().toString())) throw new IllegalArgumentException("STATS_PLAYER requiere player_stats.csv");
-        if (!Files.isRegularFile(normalized) || !Files.isReadable(normalized)) throw new IllegalArgumentException("Archivo inexistente o no legible: " + normalized);
-        try (Reader reader = Files.newBufferedReader(normalized);
+        try {
+            Path rootReal = allowedRoot.toRealPath();
+            Path fileReal = normalized.toRealPath();
+            if (!fileReal.startsWith(rootReal)) throw new IllegalArgumentException("filePath fuera del directorio permitido: " + value.getFilePath());
+            if (fileReal.getFileName() == null || !CsvConstants.EXPECTED_FILENAME.equalsIgnoreCase(fileReal.getFileName().toString())) throw new IllegalArgumentException("STATS_PLAYER requiere player_stats.csv");
+            if (!Files.isRegularFile(fileReal) || !Files.isReadable(fileReal)) throw new IllegalArgumentException("Archivo inexistente o no legible: " + fileReal);
+            try (Reader reader = Files.newBufferedReader(fileReal);
              CSVParser parser = CSVFormat.DEFAULT.builder().setHeader().setSkipHeaderRecord(true).build().parse(reader)) {
-            if (!CsvConstants.EXPECTED_HEADER.equals(parser.getHeaderNames())) throw new IllegalArgumentException("Cabecera no valida para STATS_PLAYER");
+                if (!CsvConstants.EXPECTED_HEADER.equals(parser.getHeaderNames())) throw new IllegalArgumentException("Cabecera no valida para STATS_PLAYER");
+            }
+            return fileReal;
         } catch (Exception e) {
             if (e instanceof IllegalArgumentException iae) throw iae;
             throw new IllegalArgumentException("No se puede validar el CSV: " + normalized, e);
         }
-        return normalized;
     }
 }
