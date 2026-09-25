@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.6 - 2026-09-25
+
+- [patch] KAN-82 sustituye los schemas locales FileEvent/StatsPlayer por `basketball-event-contracts:1.0.2`.
+- [patch] Elimina generación Avro local y configura CI con lectura autenticada desde GitHub Packages.
+- [patch] Mantiene los namespaces, campos y semántica Kafka existentes sin cambios.
+
 ## 2.0.5 - 2026-09-25
 
 - [patch] KAN-50 resuelve `CSV_ALLOWED_ROOT` y el fichero con `toRealPath()` antes de validar pertenencia.
