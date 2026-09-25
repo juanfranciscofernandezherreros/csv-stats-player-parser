@@ -1,4 +1,4 @@
-![version](https://img.shields.io/badge/version-2.0.4-blue)
+![version](https://img.shields.io/badge/version-2.0.5-blue)
 # csv-stats-player-parser
 
 Microservicio que sustituye la parte de parseo de `csv-stats-player-consumer`.
@@ -12,3 +12,8 @@ No usa PostgreSQL, JPA ni Flyway. Valida `player_stats.csv`, su cabecera de 24 c
 Variables principales: `KAFKA_BOOTSTRAP_SERVERS`, `KAFKA_SCHEMA_REGISTRY_URL`, `KAFKA_FILE_READY_TOPIC`, `KAFKA_PARSED_STATS_PLAYER_TOPIC`, `CSV_ALLOWED_ROOT`.
 
 Test: `mvn -B test`.
+
+
+## Seguridad de rutas
+
+La validación resuelve tanto `CSV_ALLOWED_ROOT` como `player_stats.csv` con `toRealPath()`. Un symlink situado dentro de la raíz permitida que resuelva fuera es rechazado antes del parsing.

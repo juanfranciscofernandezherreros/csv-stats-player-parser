@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.5 - 2026-09-25
+
+- [patch] KAN-50 resuelve `CSV_ALLOWED_ROOT` y el fichero con `toRealPath()` antes de validar pertenencia.
+- [patch] Bloquea symlinks dentro de la raíz que apunten fuera y conserva el uso de la ruta real validada.
+- [patch] Añade tests específicos de fichero real permitido y escape mediante symlink.
+
 ## 2.0.4 - 2026-09-25
 
 - [patch] Refuerza AGENTS.md con pre-flight obligatorio, autonomía y prohibición absoluta de escrituras directas en main.
