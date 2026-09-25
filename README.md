@@ -1,5 +1,4 @@
-Current version: **2.0.3**
-
+![version](https://img.shields.io/badge/version-2.0.3-blue)
 # csv-stats-player-parser
 
 Microservicio que sustituye la parte de parseo de `csv-stats-player-consumer`.
