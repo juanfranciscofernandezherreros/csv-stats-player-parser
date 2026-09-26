@@ -41,8 +41,14 @@ public class KafkaErrorHandlingConfig {
                         delegatingAvroSerializer(),
                         delegatingAvroSerializer()));
 
+        return buildDeadLetterPublishingRecoverer(dltTemplate, dltTopic);
+    }
+
+    DeadLetterPublishingRecoverer buildDeadLetterPublishingRecoverer(
+            KafkaTemplate<Object, Object> kafkaTemplate,
+            String dltTopic) {
         DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(
-                dltTemplate,
+                kafkaTemplate,
                 (record, exception) -> new TopicPartition(dltTopic, -1));
         recoverer.setFailIfSendResultIsError(true);
         return recoverer;
