@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.0 - 2026-09-26
+
+- [minor] KAN-108 aplica la estrategia común de errores Kafka de KAN-18.
+- [minor] Separa errores permanentes de validación/CSV de fallos transitorios de Kafka.
+- [minor] Configura retries/backoff y DLT `file.ready.stats-player.DLT`.
+- [minor] Añade tests de clasificación de error permanente y transitorio.
+
+
 ## 2.0.6 - 2026-09-25
 
 - [patch] KAN-82 sustituye los schemas locales FileEvent/StatsPlayer por `basketball-event-contracts:1.0.2`.
