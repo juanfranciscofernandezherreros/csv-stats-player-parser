@@ -41,7 +41,7 @@ class KafkaDeserializationDltTest {
                 .thenReturn(CompletableFuture.completedFuture(null));
 
         DeadLetterPublishingRecoverer recoverer =
-                new KafkaErrorHandlingConfig().deadLetterPublishingRecoverer(
+                new KafkaErrorHandlingConfig().buildDeadLetterPublishingRecoverer(
                         template, "file.ready.stats-player.DLT");
 
         ConsumerRecord<Object, Object> failedRecord =

@@ -1,4 +1,4 @@
-![version](https://img.shields.io/badge/version-2.1.1-blue)
+![version](https://img.shields.io/badge/version-2.1.2-blue)
 # csv-stats-player-parser
 
 Microservicio que sustituye la parte de parseo de `csv-stats-player-consumer`.
@@ -43,3 +43,8 @@ La DLT conserva el evento original y los headers de diagnóstico generados por S
 ### Deserialización y DLT
 
 Los deserializadores Avro están envueltos con `ErrorHandlingDeserializer`, de modo que un payload corrupto o incompatible entra en el flujo normal de recuperación. La DLT `file.ready.stats-player.DLT` admite objetos Avro y `byte[]` originales, conserva headers de diagnóstico, deja que Kafka seleccione una partición válida y propaga cualquier fallo de publicación.
+
+
+### Wiring del publisher
+
+El `KafkaTemplate` de DLT se construye internamente dentro del recoverer y no se registra como bean genérico. De esta forma Spring Boot mantiene el `KafkaTemplate<StatsPlayerKey, StatsPlayerValue>` usado por el publisher normal y la recuperación DLT conserva su soporte para Avro y `byte[]`.

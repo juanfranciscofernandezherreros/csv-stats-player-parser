@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
 import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.DelegatingByTypeSerializer;
@@ -31,24 +30,23 @@ public class KafkaErrorHandlingConfig {
     }
 
     @Bean
-    ProducerFactory<Object, Object> kafkaProducerFactory(KafkaProperties kafkaProperties) {
-        Map<String, Object> properties = kafkaProperties.buildProducerProperties();
-        return new DefaultKafkaProducerFactory<>(
-                properties,
-                delegatingAvroSerializer(),
-                delegatingAvroSerializer());
-    }
-
-    @Bean
-    KafkaTemplate<Object, Object> kafkaTemplate(ProducerFactory<Object, Object> producerFactory) {
-        return new KafkaTemplate<>(producerFactory);
-    }
-
-    @Bean
     DeadLetterPublishingRecoverer deadLetterPublishingRecoverer(
-            KafkaTemplate<Object, Object> kafkaTemplate,
+            KafkaProperties kafkaProperties,
             @Value("${app.kafka.topics.dlt}") String dltTopic) {
 
+        Map<String, Object> properties = kafkaProperties.buildProducerProperties();
+        KafkaTemplate<Object, Object> dltTemplate = new KafkaTemplate<>(
+                new DefaultKafkaProducerFactory<>(
+                        properties,
+                        delegatingAvroSerializer(),
+                        delegatingAvroSerializer()));
+
+        return buildDeadLetterPublishingRecoverer(dltTemplate, dltTopic);
+    }
+
+    DeadLetterPublishingRecoverer buildDeadLetterPublishingRecoverer(
+            KafkaTemplate<Object, Object> kafkaTemplate,
+            String dltTopic) {
         DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(
                 kafkaTemplate,
                 (record, exception) -> new TopicPartition(dltTopic, -1));
