@@ -6,6 +6,7 @@
 - [minor] Separa errores permanentes de validación/CSV de fallos transitorios de Kafka.
 - [minor] Configura retries/backoff y DLT `file.ready.stats-player.DLT`.
 - [minor] Añade tests de clasificación de error permanente y transitorio.
+- [patch] Corrige el workflow CI-friendly para autenticar GitHub Packages también durante la verificación Maven.
 
 
 ## 2.0.6 - 2026-09-25
