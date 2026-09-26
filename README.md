@@ -1,4 +1,4 @@
-![version](https://img.shields.io/badge/version-2.0.6-blue)
+![version](https://img.shields.io/badge/version-2.1.0-blue)
 # csv-stats-player-parser
 
 Microservicio que sustituye la parte de parseo de `csv-stats-player-consumer`.
@@ -24,3 +24,17 @@ La validación resuelve tanto `CSV_ALLOWED_ROOT` como `player_stats.csv` con `to
 `FileEventKey`, `FileEventValue`, `StatsPlayerKey` y `StatsPlayerValue` se consumen desde `com.fernandez.basketball:basketball-event-contracts:1.0.2`. Este repositorio ya no mantiene copias locales de esos schemas ni genera las clases Avro durante su propia build.
 
 Fuera de GitHub Actions, Maven necesita credenciales con `read:packages` para resolver el artefacto desde GitHub Packages.
+
+
+## Estrategia de errores Kafka
+
+KAN-108 aplica la política de KAN-18 al consumo de `file.ready.stats-player`.
+
+- errores de validación, ruta o CSV: non-retryable;
+- fallos transitorios de Kafka al publicar: retryable;
+- intentos agotados: `file.ready.stats-player.DLT`;
+- `KAFKA_RETRY_MAX_ATTEMPTS`: intentos totales, default `3`;
+- `KAFKA_RETRY_BACKOFF_MS`: backoff fijo, default `1000`;
+- `KAFKA_PLAYER_PARSER_DLT_TOPIC`: topic DLT configurable.
+
+La DLT conserva el evento original y los headers de diagnóstico generados por Spring Kafka.

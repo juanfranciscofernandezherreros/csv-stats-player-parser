@@ -21,3 +21,7 @@ app:
     topics:
       file-ready: ${KAFKA_FILE_READY_TOPIC:file.ready.stats-player}
       parsed-stats-player: ${KAFKA_PARSED_STATS_PLAYER_TOPIC:stats-player.parsed}
+      dlt: ${KAFKA_PLAYER_PARSER_DLT_TOPIC:file.ready.stats-player.DLT}
+    error:
+      max-attempts: ${KAFKA_RETRY_MAX_ATTEMPTS:3}
+      backoff-ms: ${KAFKA_RETRY_BACKOFF_MS:1000}
