@@ -1,4 +1,4 @@
-![version](https://img.shields.io/badge/version-2.1.2-blue)
+![version](https://img.shields.io/badge/version-2.2.0-blue)
 # csv-stats-player-parser
 
 Microservicio que sustituye la parte de parseo de `csv-stats-player-consumer`.
@@ -18,6 +18,10 @@ Test: `mvn -B test`.
 
 La validación resuelve tanto `CSV_ALLOWED_ROOT` como `player_stats.csv` con `toRealPath()`. Un symlink situado dentro de la raíz permitida que resuelva fuera es rechazado antes del parsing.
 
+
+## Publicación Kafka por chunks
+
+KAN-72 elimina la espera `send(...).join()` por jugador. Cada chunk de hasta 500 jugadores se envía de forma asíncrona y se confirma con una única barrera `CompletableFuture.allOf(...)` antes de continuar. La key de cada jugador no cambia, por lo que se conserva el particionamiento existente. Un fallo de cualquier ACK hace fallar el procesamiento y mantiene la política retry/DLT.
 
 ## Contratos Avro compartidos
 
