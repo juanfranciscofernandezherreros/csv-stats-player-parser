@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.2.0 - 2026-09-26
+
+- [minor] KAN-72 publica cada chunk de jugadores de forma asíncrona en lugar de esperar un ACK por fila.
+- [minor] Usa `CompletableFuture.allOf(...)` como barrera de confirmación por chunk.
+- [minor] Conserva key/partición y propagación de fallos Kafka.
+- [minor] Añade tests de publicación concurrente controlada y error de ACK.
+
+
 ## 2.1.2 - 2026-09-26
 
 - [patch] KAN-108 corrige el wiring del `KafkaTemplate` tras el hardening de DLT.
