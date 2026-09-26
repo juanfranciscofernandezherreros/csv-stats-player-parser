@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.2 - 2026-09-26
+
+- [patch] KAN-108 corrige el wiring del `KafkaTemplate` tras el hardening de DLT.
+- [patch] Evita registrar un `KafkaTemplate<Object, Object>` que pueda desplazar el template tipado del publisher de STATS-PLAYER.
+- [patch] Mantiene el template DLT aislado dentro del recoverer y añade cobertura de arranque de contexto.
+
+
 ## 2.1.1 - 2026-09-26
 
 - [patch] KAN-108 captura errores de deserialización Avro mediante `ErrorHandlingDeserializer`.
